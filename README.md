@@ -34,15 +34,6 @@
       compile project(':react-native-bluetooth-listener')
   	```
 
-#### Windows
-[Read it! :D](https://github.com/ReactWindows/react-native)
-
-1. In Visual Studio add the `RNBluetoothListener.sln` in `node_modules/react-native-bluetooth-listener/windows/RNBluetoothListener.sln` folder to their solution, reference from their app.
-2. Open up your `MainPage.cs` app
-  - Add `using Bluetooth.Listener.RNBluetoothListener;` to the usings at the top of the file
-  - Add `new RNBluetoothListenerPackage()` to the `List<IReactPackage>` returned by the `Packages` method
-
-
 ## Usage
 ```javascript
 import RNBluetoothListener from 'react-native-bluetooth-listener';

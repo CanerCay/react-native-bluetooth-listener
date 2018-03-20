@@ -1,18 +1,24 @@
-
 {
   "name": "react-native-bluetooth-listener",
   "version": "1.0.0",
-  "description": "",
+  "description": "React native bluetooth state controller",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "android",
+    "ios",
+    "bluetooth"
   ],
-  "author": "",
-  "license": "",
+  "author": {
+    "name": "Caner Cay",
+    "username": "canercay",
+    "email": "cay.cnr@gmail.com"
+  },
+  "license": "MIT",
   "peerDependencies": {
-    "react-native": "^0.41.2"
+    "react-native": "^0.53.0"
   }
 }
