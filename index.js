@@ -60,16 +60,16 @@ const BluetoothManager = {
 
     async enable(enabled: boolean = true) {
         return new Promise((resolve, reject) => {
-            if (Platform.OS === 'android') {
-                if (enabled) {
-                    RNBluetoothListener.setBluetoothOn((error, done) => {
-                        if (error) {
-                            reject(error);
-                            return;
-                        }
-                        resolve(done);
-                    });
-                } else {
+            if (enabled) {
+                RNBluetoothListener.setBluetoothOn((error, done) => {
+                    if (error) {
+                        reject(error);
+                        return;
+                    }
+                    resolve(done);
+                });
+            } else {
+                if (Platform.OS === 'android') {
                     RNBluetoothListener.setBluetoothOff((error, done) => {
                         if (error) {
                             reject(error);
@@ -77,9 +77,8 @@ const BluetoothManager = {
                         }
                         resolve(done);
                     });
+
                 }
-            } else {
-                reject('Unsupported platform');
             }
         });
     },

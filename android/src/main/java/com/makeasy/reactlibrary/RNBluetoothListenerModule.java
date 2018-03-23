@@ -1,6 +1,7 @@
 
 package com.makeasy.reactlibrary;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,11 +12,11 @@ import android.util.Log;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
@@ -26,14 +27,17 @@ public class RNBluetoothListenerModule extends ReactContextBaseJavaModule implem
 
     private BluetoothAdapter bluetoothAdapter;
     private Context context;
+    private Activity currentActivity;
     BluetoothAdapter adapter;
+
+    private static final int ENABLE_LOCATION_SERVICES = 1009;
 
     public RNBluetoothListenerModule(ReactApplicationContext reactContext) {
         super(reactContext);
         context = reactContext;
         adapter = getBluetoothAdapter();
         this.reactContext = reactContext;
-        reactContext.addActivityEventListener(this);
+        currentActivity = getCurrentActivity();
         registerBluetoothStateReceiver();
         Log.d(LOG_TAG, "BluetoothStateModule created");
     }
@@ -67,6 +71,7 @@ public class RNBluetoothListenerModule extends ReactContextBaseJavaModule implem
     public void setBluetoothOn(Callback callback) {
         if (adapter != null) {
             adapter.enable();
+            currentActivity = getCurrentActivity();
         }
         callback.invoke(null, adapter != null);
     }
@@ -154,7 +159,14 @@ public class RNBluetoothListenerModule extends ReactContextBaseJavaModule implem
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+        if (requestCode == ENABLE_LOCATION_SERVICES) {
+            currentActivity = activity;
+        }
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
 
     }
 }
