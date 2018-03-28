@@ -1,6 +1,6 @@
 {
   "name": "react-native-bluetooth-listener",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React native bluetooth state controller",
   "main": "index.js",
   "scripts": {
