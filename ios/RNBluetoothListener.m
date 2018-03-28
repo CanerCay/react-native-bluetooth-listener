@@ -2,7 +2,7 @@
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
-@interface RNBluetoothInfo ()
+@interface RNBluetoothListener ()
 @property (nonatomic, strong) CBCentralManager *bluetoothManager;
 @end
 
@@ -56,8 +56,6 @@ RCT_EXPORT_MODULE();
     return @[@"bluetoothDidUpdateState"];
 }
 
-#pragma mark - public method
-
 RCT_EXPORT_METHOD(getCurrentState:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
@@ -69,6 +67,51 @@ RCT_EXPORT_METHOD(getCurrentState:(RCTPromiseResolveBlock)resolve
     }
     
 }
+
+RCT_EXPORT_METHOD(setBluetoothOn:(RCTResponseSenderBlock)callback)
+{
+    if (self.checkBluetoothAccess){
+        [self requestBluetoothAccess];
+        callback(@[[NSNull null], @[[NSNull null]]]);
+    } else {
+        callback(@[[NSNull null], @[[NSNull null]]]);
+    }
+}
+
+- (Boolean)checkBluetoothAccess {
+    
+    if(!self.bluetoothManager) {
+        self.bluetoothManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+    }
+    
+    /*
+     We can ask the bluetooth manager ahead of time what the authorization status is for our bundle and take the appropriate action.
+     */
+    
+    CBCentralManagerState state = [self.bluetoothManager state];
+    
+    if(state != CBCentralManagerStateUnknown && state != CBCentralManagerStateUnauthorized) {
+        return true;
+    }
+    
+    return false;
+}
+
+
+- (void)requestBluetoothAccess {
+    
+    if(!self.bluetoothManager) {
+        self.bluetoothManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+    }
+    
+    /*
+     When the application requests to start scanning for bluetooth devices that is when the user is presented with a consent dialog.
+     */
+    
+    
+    [self.bluetoothManager scanForPeripheralsWithServices:nil options:nil];
+}
+
 
 RCT_EXPORT_METHOD(openBluetoothSettings:(RCTResponseSenderBlock) callback) {
     NSLog(@"iOS: trying to open settings");

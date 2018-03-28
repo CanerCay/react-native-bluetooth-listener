@@ -9,31 +9,31 @@ import android.content.IntentFilter;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-public class RNBluetoothListenerModule extends ReactContextBaseJavaModule implements ActivityEventListener {
+public class RNBluetoothListenerModule extends ReactContextBaseJavaModule {
 
-    public static final String LOG_TAG = "MAKEASY";
+    private static final String LOG_TAG = "MAKEASY";
     private ReactApplicationContext reactContext;
 
     private BluetoothAdapter bluetoothAdapter;
     private Context context;
-    BluetoothAdapter adapter;
+    private BluetoothAdapter adapter;
+
+    private static final int ENABLE_LOCATION_SERVICES = 1009;
 
     public RNBluetoothListenerModule(ReactApplicationContext reactContext) {
         super(reactContext);
         context = reactContext;
         adapter = getBluetoothAdapter();
         this.reactContext = reactContext;
-        reactContext.addActivityEventListener(this);
         registerBluetoothStateReceiver();
         Log.d(LOG_TAG, "BluetoothStateModule created");
     }
@@ -151,10 +151,5 @@ public class RNBluetoothListenerModule extends ReactContextBaseJavaModule implem
     @Override
     public String getName() {
         return "RNBluetoothListener";
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
     }
 }
