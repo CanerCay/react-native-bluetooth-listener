@@ -79,7 +79,6 @@ RCT_EXPORT_METHOD(setBluetoothOn:(RCTResponseSenderBlock)callback)
 }
 
 - (Boolean)checkBluetoothAccess {
-    
     if(!self.bluetoothManager) {
         self.bluetoothManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     }
@@ -87,28 +86,22 @@ RCT_EXPORT_METHOD(setBluetoothOn:(RCTResponseSenderBlock)callback)
     /*
      We can ask the bluetooth manager ahead of time what the authorization status is for our bundle and take the appropriate action.
      */
-    
     CBCentralManagerState state = [self.bluetoothManager state];
     
     if(state != CBCentralManagerStateUnknown && state != CBCentralManagerStateUnauthorized) {
         return true;
     }
-    
     return false;
 }
 
 
 - (void)requestBluetoothAccess {
-    
     if(!self.bluetoothManager) {
         self.bluetoothManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     }
-    
     /*
      When the application requests to start scanning for bluetooth devices that is when the user is presented with a consent dialog.
      */
-    
-    
     [self.bluetoothManager scanForPeripheralsWithServices:nil options:nil];
 }
 
