@@ -2,7 +2,6 @@ import {NativeEventEmitter, NativeModules, Platform} from "react-native";
 
 const {RNBluetoothListener} = NativeModules;
 
-// console.log("RNBluetoothListener", RNBluetoothListener);
 let BluetoothManager = {};
 
 if (RNBluetoothListener) {
@@ -91,13 +90,6 @@ if (RNBluetoothListener) {
         async disable() {
             return this.enable(false);
         },
-
-        openBluetoothSettings() {
-            if (Platform.OS === "ios") {
-                RNBluetoothListener.openBluetoothSettings(() => {
-                })
-            }
-        }
     };
 }
 
